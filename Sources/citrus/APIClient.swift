@@ -50,7 +50,6 @@ query StatusCheckRollup {
             return nil
         }
         
-        let responseBody = try JSONDecoder().decode(ResponseBody.self, from: data)
-        return responseBody
+        return try JSONDecoder().decode(ResponseBody.self, from: data)
     }
 }
