@@ -1,5 +1,5 @@
 //
-//  Client.swift
+//  APIClient.swift
 //  
 //
 //  Created by tokizo on 2023/02/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Client {
+struct APIClient {
     static func query() async throws -> ResponseBody? {
         var request = URLRequest(url: URL(string: "https://api.github.com/graphql")!)
         request.httpMethod = "POST"

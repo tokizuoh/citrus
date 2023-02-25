@@ -4,7 +4,7 @@ import Foundation
 public struct citrus {
     public static func main() async {
         do {
-            let result = try await Client.query()
+            let result = try await APIClient.query()
             print(result)
         } catch {
             print(error)
