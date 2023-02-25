@@ -4,10 +4,13 @@ import Foundation
 public struct citrus {
     public static func main() async {
         do {
-            let result = try await APIClient.query()
+            guard let result = try await APIClient.query() else {
+                exit(1)
+            }
             print(result)
         } catch {
             print(error)
+            exit(1)
         }
     }
 }
