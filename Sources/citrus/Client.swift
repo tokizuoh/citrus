@@ -8,7 +8,7 @@
 import Foundation
 
 final class Client {
-    func query() async throws -> ResponseBody? {
+    static func query() async throws -> ResponseBody? {
         var request = URLRequest(url: URL(string: "https://api.github.com/graphql")!)
         request.httpMethod = "POST"
         request.addValue("bearer \(bearerToken)", forHTTPHeaderField: "Authorization")
