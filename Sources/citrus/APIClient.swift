@@ -42,7 +42,8 @@ query StatusCheckRollup {
         let body = ["query": query]
         request.httpBody = try! JSONSerialization.data(withJSONObject: body)
         
-        let (data, response) = try await URLSession.shared.data(for: request)
+        // TODO: Implement URLSessionTaskDelegate
+        let (data, response) = try await URLSession.shared.data(for: request, delegate: nil)
         
         // TODO: Handle statusCode
         guard let httpResponse = response as? HTTPURLResponse,
