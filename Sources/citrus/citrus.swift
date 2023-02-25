@@ -2,9 +2,13 @@ import Foundation
 
 @main
 public struct citrus {
-    public static func main() {
+    public static func main() async {
         let client = Client()
-        let result = client.query()
-        print(result)
+        do {
+            let result = try await client.query()
+            print(result)
+        } catch {
+            print(error)
+        }
     }
 }

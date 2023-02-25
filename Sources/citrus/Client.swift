@@ -8,7 +8,7 @@
 import Foundation
 
 final class Client {
-    func query() -> ResponseBody? {
+    func query() async throws -> ResponseBody? {
         var request = URLRequest(url: URL(string: "https://api.github.com/graphql")!)
         request.httpMethod = "POST"
         request.addValue("bearer \(bearerToken)", forHTTPHeaderField: "Authorization")
@@ -42,30 +42,15 @@ query StatusCheckRollup {
         let body = ["query": query]
         request.httpBody = try! JSONSerialization.data(withJSONObject: body)
         
-        let semaphore = DispatchSemaphore(value: 0)
-        var responseBody: ResponseBody? = nil
-        let task = URLSession.shared.dataTask(with: request) { data, _, error in
-            if let error {
-                print(error)
-                return
-            }
-            
-            guard let data else {
-                print("NO DATA")
-                return
-            }
-            
-            do {
-                let jsonData = try JSONDecoder().decode(ResponseBody.self, from: data)
-                responseBody = jsonData
-            } catch {
-                print(error)
-            }
-            
-            semaphore.signal()
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        // TODO: Handle statusCode
+        guard let httpResponse = response as? HTTPURLResponse,
+              httpResponse.statusCode == 200 else {
+            return nil
         }
-        task.resume()
-        semaphore.wait()
+        
+        let responseBody = try JSONDecoder().decode(ResponseBody.self, from: data)
         return responseBody
     }
 }
