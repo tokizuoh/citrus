@@ -5,6 +5,7 @@
 //  Created by tokizo on 2023/02/25.
 //
 
+// https://docs.github.com/ja/graphql/reference/queries#repository
 struct ResponseBody: Codable {
     struct Data: Codable {
         struct Repository: Codable {
