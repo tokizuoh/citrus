@@ -58,11 +58,12 @@ query StatusCheckRollup {
             }
             
             do {
-                let json = try JSONSerialization.jsonObject(with: data)
-                print(json)
+                let jsonData = try JSONDecoder().decode(ResponseBody.self, from: data)
+                print(jsonData)
             } catch {
-                print("Parse error: \(error)")
+                print(error)
             }
+            
             semaphore.signal()
         }
         task.resume()
