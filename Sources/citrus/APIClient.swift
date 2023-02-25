@@ -11,12 +11,12 @@ struct APIClient {
     static func query() async throws -> ResponseBody? {
         var request = URLRequest(url: URL(string: "https://api.github.com/graphql")!)
         request.httpMethod = "POST"
-        request.addValue("bearer \(bearerToken)", forHTTPHeaderField: "Authorization")
+        request.addValue("bearer \(EnvironmentVariable.token!)", forHTTPHeaderField: "Authorization")
         
         let query = """
 query StatusCheckRollup {
-  repository(name: \"\(name)\", owner: \"\(owner)\") {
-    object(expression: \"\(expression)\") {
+  repository(name: \"\(EnvironmentVariable.name!)\", owner: \"\(EnvironmentVariable.owner!)\") {
+    object(expression: \"\(EnvironmentVariable.expression!)\") {
       ... on Commit {
         statusCheckRollup {
           contexts(first: 100) {
