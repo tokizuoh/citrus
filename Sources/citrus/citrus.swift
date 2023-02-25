@@ -4,6 +4,7 @@ import Foundation
 public struct citrus {
     public static func main() {
         let client = Client()
-        client.query()
+        let result = client.query()
+        print(result)
     }
 }
