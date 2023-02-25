@@ -1,7 +1,6 @@
 name: show-commit-hash
 
-on:
-  workflow_dispatch:
+on: push
 
 jobs:
   show-commit-hash:
