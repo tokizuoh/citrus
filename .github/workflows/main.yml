@@ -1,0 +1,11 @@
+name: show-commit-hash
+
+on:
+  workflow_dispatch:
+
+jobs:
+  show-commit-hash:
+    runs-on: ubuntu-latest
+    steps:
+      - name: show commit hash
+        run: echo ${{ github.sha }}
