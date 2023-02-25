@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class Client {
+struct Client {
     static func query() async throws -> ResponseBody? {
         var request = URLRequest(url: URL(string: "https://api.github.com/graphql")!)
         request.httpMethod = "POST"
