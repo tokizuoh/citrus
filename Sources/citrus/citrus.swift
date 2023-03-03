@@ -26,7 +26,13 @@ public struct citrus {
             guard let result = try await APIClient.query() else {
                 exit(1)
             }
-            print(result)
+            result.data.repository.object.statusCheckRollup.contexts.nodes.map { node in
+                if let checkRun = node.asCheckRun() {
+                    print(checkRun)
+                } else if let statusContext = node.asStatusContext() {
+                    print(statusContext)
+                }
+            }
         } catch {
             print(error)
             exit(1)
