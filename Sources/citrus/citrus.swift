@@ -1,6 +1,6 @@
 import Foundation
 
-struct EnvironmentVariable {
+enum EnvironmentVariable {
     static var name: String?
     static var owner: String?
     static var token: String?
