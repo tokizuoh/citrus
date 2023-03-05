@@ -8,7 +8,7 @@ public struct citrus {
         } catch {
             fatalError(error.localizedDescription)
         }
-        
+
         do {
             let result = try await APIClient.query()
 
