@@ -1,0 +1,10 @@
+name: exit_1
+
+on:
+  workflow_dispatch:
+
+jobs:
+  show-commit-hash:
+    runs-on: ubuntu-latest
+    steps:
+      - run: exit 1
