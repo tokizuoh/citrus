@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 enum EnvironmentVariablesConfiguration {
     static func setUp() throws {
         #if DEBUG
