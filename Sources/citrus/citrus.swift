@@ -11,7 +11,7 @@ public struct citrus {
         
         do {
             let result = try await APIClient.query()
-            
+
             let statusChecks: [StatusCheck] = result
                 .data
                 .repository
@@ -33,7 +33,7 @@ public struct citrus {
                     guard let state = StatusCheck.State.convertState(from: statusContext.state) else {
                         return nil
                     }
-                    
+
                     return StatusCheck(
                         name: statusContext.context,
                         state: state,
@@ -43,7 +43,13 @@ public struct citrus {
                     return nil
                 }
             }
-            dump(statusChecks)
+
+            let validatedStatusChecks = Validator.validate(statusChecks)
+            if validatedStatusChecks.isEmpty {
+                exit(0)
+            } else {
+                fatalError(validatedStatusChecks.description)
+            }
         } catch {
             fatalError(error.localizedDescription)
         }
