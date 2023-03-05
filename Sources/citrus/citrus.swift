@@ -2,8 +2,12 @@ import Foundation
 
 @main
 public struct citrus {
-    public static func main() async {
-        EnvironmentVariablesConfiguration.setUp()
+    public static func main() async throws {
+        do {
+            try EnvironmentVariablesConfiguration.setUp()
+        } catch {
+            fatalError(error.localizedDescription)
+        }
         
         do {
             guard let result = try await APIClient.query() else {

@@ -7,34 +7,45 @@
 
 import Foundation
 enum EnvironmentVariablesConfiguration {
-    // TODO: throw error
-    static func setUp() {
+    static func setUp() throws {
         #if DEBUG
-        func debugSetUp() {
-            guard let name = ProcessInfo.processInfo.environment["CITRUS_NAME"],
-                let owner = ProcessInfo.processInfo.environment["CITRUS_OWNER"],
-                let expression = ProcessInfo.processInfo.environment["CITRUS_EXPRESSION"],
-                let token = ProcessInfo.processInfo.environment["CITRUS_BEARER_TOKEN"] else {
-                exit(1)
-            }
+        do {
+            let name = try getEnvironmentVaiable(by: "CITRUS_NAME")
+            let owner = try getEnvironmentVaiable(by: "CITRUS_OWNER")
+            let expression = try getEnvironmentVaiable(by: "CITRUS_EXPRESSION")
+            let token = try getEnvironmentVaiable(by: "CITRUS_BEARER_TOKEN")
+            
             EnvironmentVariable.name = name
             EnvironmentVariable.owner = owner
             EnvironmentVariable.expression = expression
             EnvironmentVariable.token = token
+        } catch {
+            throw error
         }
         #else
-        guard let gitHubRepository = ProcessInfo.processInfo.environment["GITHUB_REPOSITORY"],
-              let expression = ProcessInfo.processInfo.environment["GITHUB_SHA"],
-              let token = ProcessInfo.processInfo.environment["GITHUB_TOKEN"]  else {
-            exit(1)
+        do {
+            let gitHubRepository = try getEnvironmentVaiable(by: "GITHUB_REPOSITORY")
+            let expression = try getEnvironmentVaiable(by: "GITHUB_SHA")
+            let token = try getEnvironmentVaiable(by: "GITHUB_TOKEN")
+            
+            let nameAndOwner = gitHubRepository.components(separatedBy: "/")
+            let name = nameAndOwner[0]
+            let owner = nameAndOwner[1]
+            EnvironmentVariable.name = name
+            EnvironmentVariable.owner = owner
+            EnvironmentVariable.expression = expression
+            EnvironmentVariable.token = token
+        } catch {
+            throw error
         }
-        let nameAndOwner = gitHubRepository.components(separatedBy: "/")
-        let name = nameAndOwner[0]
-        let owner = nameAndOwner[1]
-        EnvironmentVariable.name = name
-        EnvironmentVariable.owner = owner
-        EnvironmentVariable.expression = expression
-        EnvironmentVariable.token = token
         #endif
+    }
+    
+    private static func getEnvironmentVaiable(by name: String) throws -> String {
+        guard let environmentVariable =  ProcessInfo.processInfo.environment[name] else {
+            throw CitrusError.noSuchEnvironmentVariable(name)
+        }
+        
+        return environmentVariable
     }
 }
