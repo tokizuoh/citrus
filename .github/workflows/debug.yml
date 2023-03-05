@@ -1,7 +1,7 @@
 name: exit_1
 
 on:
-  workflow_dispatch:
+  push
 
 jobs:
   exit_1:
