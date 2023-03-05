@@ -3,17 +3,7 @@ import Foundation
 @main
 public struct citrus {
     public static func main() async {
-        // TODO: Separate
-        guard let name = ProcessInfo.processInfo.environment["CITRUS_NAME"],
-            let owner = ProcessInfo.processInfo.environment["CITRUS_OWNER"],
-            let expression = ProcessInfo.processInfo.environment["CITRUS_EXPRESSION"],
-            let token = ProcessInfo.processInfo.environment["CITRUS_BEARER_TOKEN"] else {
-            exit(1)
-        }
-        EnvironmentVariable.name = name
-        EnvironmentVariable.owner = owner
-        EnvironmentVariable.token = token
-        EnvironmentVariable.expression = expression
+        EnvironmentVariablesConfiguration.setUp()
         
         do {
             guard let result = try await APIClient.query() else {
@@ -51,7 +41,7 @@ public struct citrus {
                     return nil
                 }
             }
-            print(statusChecks)
+            dump(statusChecks)
         } catch {
             print(error)
             exit(1)
