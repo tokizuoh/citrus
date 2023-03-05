@@ -7,4 +7,5 @@
 
 enum CitrusError: Error {
     case noSuchEnvironmentVariable(String)
+    case httpResponseError(String)
 }

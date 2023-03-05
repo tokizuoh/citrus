@@ -10,9 +10,7 @@ public struct citrus {
         }
         
         do {
-            guard let result = try await APIClient.query() else {
-                exit(1)
-            }
+            let result = try await APIClient.query()
             
             let statusChecks: [StatusCheck] = result
                 .data
@@ -47,8 +45,7 @@ public struct citrus {
             }
             dump(statusChecks)
         } catch {
-            print(error)
-            exit(1)
+            fatalError(error.localizedDescription)
         }
     }
 }

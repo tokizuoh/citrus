@@ -8,7 +8,7 @@
 import Foundation
 
 struct APIClient {
-    static func query() async throws -> ResponseBody? {
+    static func query() async throws -> ResponseBody {
         var request = URLRequest(url: URL(string: "https://api.github.com/graphql")!)
         request.httpMethod = "POST"
         request.addValue("bearer \(EnvironmentVariable.token!)", forHTTPHeaderField: "Authorization")
@@ -40,7 +40,7 @@ query StatusCheckRollup {
 }
 """
         let body = ["query": query]
-        request.httpBody = try! JSONSerialization.data(withJSONObject: body)
+        request.httpBody = try JSONSerialization.data(withJSONObject: body)
         
         // TODO: Implement URLSessionTaskDelegate
         let (data, response) = try await URLSession.shared.data(for: request, delegate: nil)
@@ -48,7 +48,7 @@ query StatusCheckRollup {
         // TODO: Handle statusCode
         guard let httpResponse = response as? HTTPURLResponse,
               httpResponse.statusCode == 200 else {
-            return nil
+            throw CitrusError.httpResponseError(response.description)
         }
         
         return try JSONDecoder().decode(ResponseBody.self, from: data)
