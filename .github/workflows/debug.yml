@@ -1,4 +1,4 @@
-name: exit_1
+name: debug
 
 on:
   push
