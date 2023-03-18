@@ -6,5 +6,4 @@ jobs:
   show-commit-hash:
     runs-on: ubuntu-latest
     steps:
-      - name: show commit hash
-        run: echo ${{ github.sha }}
+      - run: swift build -c release --arch x86_64
