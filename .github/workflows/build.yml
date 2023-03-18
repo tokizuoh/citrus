@@ -6,4 +6,5 @@ jobs:
   show-commit-hash:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - run: swift build -c release --arch x86_64
